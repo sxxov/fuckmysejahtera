@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <View
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"/>
+
+        <View
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/layout_scroll_activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/input_menu_hamburger" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:paddingTop="36dp"
+                android:paddingBottom="16dp"
+                android:background="@color/colorAccent"
+                app:layout_constraintBottom_toTopOf="@+id/layout_input_bottom"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:id="@+id/title_configure"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginEnd="36dp"
+                    android:fontFamily="@font/space_mono_bold"
+                    android:lineSpacingMultiplier="0.6"
+                    android:text="@string/title_configure"
+                    android:textColor="?attr/colourTextPrimary"
+                    android:textSize="48sp"
+                    android:maxLines="2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.9" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_input_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colourBackground"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:id="@+id/label_input_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:fontFamily="@font/space_mono"
+                    android:text="@string/input_name"
+                    android:textColor="?attr/colourTextPrimary"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toTopOf="@+id/input_name"
+                    app:layout_constraintStart_toStartOf="@+id/input_name" />
+
+                <EditText
+                    android:id="@+id/input_name"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginTop="68dp"
+                    android:layout_marginEnd="36dp"
+                    android:background="@drawable/common_background_rounded"
+                    android:ems="10"
+                    android:fontFamily="@font/space_mono_bold"
+                    android:inputType="textPersonName"
+                    android:maxLength="4095"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:textColor="?attr/colourTextPrimary"
+                    android:textCursorDrawable="@drawable/input_cursor"
+                    android:textSize="16sp"
+                    android:autofillHints="name"
+                    android:hint="@string/input_name"
+                    android:textColorHint="@android:color/transparent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/label_input_contact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:fontFamily="@font/space_mono"
+                    android:text="@string/input_contact"
+                    android:textColor="?attr/colourTextPrimary"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toTopOf="@+id/input_contact"
+                    app:layout_constraintStart_toStartOf="@+id/input_contact" />
+
+                <EditText
+                    android:id="@+id/input_contact"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="36dp"
+                    android:background="@drawable/common_background_rounded"
+                    android:ems="10"
+                    android:fontFamily="@font/space_mono_bold"
+                    android:inputType="number"
+                    android:maxLength="4095"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:textColor="?attr/colourTextPrimary"
+                    android:textCursorDrawable="@drawable/input_cursor"
+                    android:textSize="16sp"
+                    android:autofillHints="phone"
+                    android:hint="@string/input_contact"
+                    android:textColorHint="@android:color/transparent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/input_name"
+                    app:layout_constraintVertical_bias="0.1" />
+
+                <TextView
+                    android:id="@+id/label_input_risk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:fontFamily="@font/space_mono"
+                    android:text="@string/input_risk"
+                    android:textColor="?attr/colourTextPrimary"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toTopOf="@+id/layout_input_risk"
+                    app:layout_constraintStart_toStartOf="@+id/layout_input_risk" />
+
+                <LinearLayout
+                    android:id="@+id/layout_input_risk"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="36dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="36dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/input_contact"
+                    app:layout_constraintVertical_bias="0.14">
+
+                    <Button
+                        android:id="@+id/input_button_risk_low"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_background_rounded_rippled"
+                        android:fontFamily="@font/space_mono_bold"
+                        android:stateListAnimator="@null"
+                        android:text="@string/option_risk_low"
+                        android:textAllCaps="false"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="onInputButtonRiskLowClick" />
+
+                    <Space
+                        android:layout_width="28dp"
+                        android:layout_height="match_parent" />
+
+                    <Button
+                        android:id="@+id/input_button_risk_high"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_background_rounded_rippled"
+                        android:fontFamily="@font/space_mono_bold"
+                        android:stateListAnimator="@null"
+                        android:text="@string/option_risk_high"
+                        android:textAllCaps="false"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:onClick="onInputButtonRiskHighClick" />
+                </LinearLayout>
+
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/input_button_save"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="32dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="onInputButtonSaveClick"
+                    android:src="@drawable/ic_done"
+                    app:fab_colorNormal="@color/colorAccent"
+                    app:fab_colorPressed="@color/colorAccent"
+                    app:fab_colorDisabled="?attr/colourDivider"
+                    app:fab_colorRipple="?attr/colourBackground"
+                    app:fab_showShadow="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_input_risk"
+                    app:layout_constraintVertical_bias="0.181" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.github.clans.fab.FloatingActionMenu
+                android:id="@+id/input_menu_hamburger"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:clickable="true"
+                android:elevation="0dp"
+                android:focusable="true"
+                android:paddingStart="36dp"
+                android:paddingTop="36dp"
+                android:paddingEnd="36dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:menu_colorNormal="@color/colorAccent"
+                app:menu_colorPressed="@color/colorAccent"
+                app:menu_colorRipple="?attr/colourTextPrimary"
+                app:menu_fab_size="normal"
+                app:menu_icon="@drawable/ic_menu"
+                app:menu_labels_colorNormal="?attr/colourDivider"
+                app:menu_labels_colorPressed="?attr/colourDivider"
+                app:menu_labels_colorRipple="?attr/colourBackground"
+                app:menu_labels_cornerRadius="100dp"
+                app:menu_labels_ellipsize="end"
+                app:menu_labels_paddingBottom="8dp"
+                app:menu_labels_paddingLeft="16dp"
+                app:menu_labels_paddingRight="16dp"
+                app:menu_labels_paddingTop="8dp"
+                app:menu_labels_showShadow="false"
+                app:menu_labels_singleLine="true"
+                app:menu_labels_textColor="?attr/colourTextPrimary"
+                app:menu_openDirection="down"
+                app:menu_shadowRadius="0dp"
+                app:menu_showShadow="false">
+
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/input_menu_hamburger_button_help"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/fam_help"
+                    android:elevation="0dp"
+                    android:onClick="onInputMenuHamburgerButtonHelpClick"
+                    android:src="@drawable/ic_help"
+                    app:backgroundTint="@android:color/transparent"
+                    app:fab_colorNormal="@android:color/transparent"
+                    app:fab_colorPressed="@android:color/transparent"
+                    app:fab_colorRipple="?attr/colourDivider"
+                    app:fab_label="@string/fam_help"
+                    app:fab_showShadow="false" />
+
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/input_menu_hamburger_button_toggle_sun"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/fam_toggle_sun"
+                    android:elevation="0dp"
+                    android:onClick="onInputMenuHamburgerButtonToggleSunClick"
+                    android:src="@drawable/ic_sun"
+                    app:backgroundTint="@android:color/transparent"
+                    app:fab_colorNormal="@android:color/transparent"
+                    app:fab_colorPressed="@android:color/transparent"
+                    app:fab_colorRipple="?attr/colourDivider"
+                    app:fab_label="@string/fam_toggle_sun"
+                    app:fab_showShadow="false" />
+
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/input_menu_hamburger_button_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/fam_history"
+                    android:elevation="0dp"
+                    android:onClick="onInputMenuHamburgerButtonOpenHistory"
+                    android:src="@drawable/ic_history"
+                    app:backgroundTint="@android:color/transparent"
+                    app:fab_colorNormal="@android:color/transparent"
+                    app:fab_colorPressed="@android:color/transparent"
+                    app:fab_colorRipple="?attr/colourDivider"
+                    app:fab_label="@string/fam_history"
+                    app:fab_showShadow="false" />
+
+            </com.github.clans.fab.FloatingActionMenu>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <View
+        android:id="@+id/overlay_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#44000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="onOverlayBottomSheetClick"
+        android:visibility="gone" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/bottom_sheet_help" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

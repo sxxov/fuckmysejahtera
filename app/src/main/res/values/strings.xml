@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">No MySejahtera</string>
+
+    <string name="title_configure">define\nyourself</string>
+    <string name="title_help">how i work</string>
+    <string name="title_history">scan\nhistory</string>
+
+    <string name="input_name">name</string>
+    <string name="input_contact">phone number</string>
+    <string name="input_risk">risk factor</string>
+
+    <string name="option_risk_low">low</string>
+    <string name="option_risk_high">high</string>
+
+    <string name="snackbar_save_complete">successfully saved!</string>
+    <string name="snackbar_save_name_empty">name is not filled in</string>
+    <string name="snackbar_save_contact_empty">contact is not filled in</string>
+    <string name="snackbar_save_contact_invalid">contact is invalid</string>
+    <string name="snackbar_webview_error">oh no</string>
+    <string name="snackbar_common_action_ok">OK</string>
+    <string name="snackbar_common_action_retry">retry</string>
+
+    <string name="fam_history">scan history</string>
+    <string name="fam_toggle_sun">toggle sun</string>
+    <string name="fam_help">how do i work?</string>
+
+    <string name="subtitle_help_1">1.</string>
+    <string name="description_help_1">input your details to be used for contact tracing here</string>
+    <string name="subtitle_help_2">2.</string>
+    <string name="description_help_2">use an external qr code scanner to scan a mysejahtera qr code &amp; set this app as default</string>
+    <string name="subtitle_help_3">3.</string>
+    <string name="description_help_3">enjoy</string>
+
+    <string name="history_deleted1">we\'ll pretend that never happened…</string>
+    <string name="history_deleted2">poof…</string>
+    <string name="history_deleted3">and it\'s gone…</string>
+    <string name="history_deleted4">where\'d it go?…</string>
+    <string name="history_deleted5">abracadabra! it\'s no more…</string>
+    <string name="history_deleted6">who needs history anyways?</string>
+    <string name="history_deleted7">oH nO, it\'s deAd…</string>
+    <string name="history_deleted8">history was slain by Herobrine…</string>
+    <string name="history_deleted9">it "accidentally" fell of a cliff…</string>
+    <string name="history_deleted10">it won\'t haunt you anymore…</string>
+    <string name="history_generic_unavailable">this history item isn\'t available</string>
+
+    <string name="title_history_placeholder">🤷‍♀️</string>
+    <string name="desc_history_placeholder">hmm? nothing here… i\'m sure things\'ll come when you start scanning</string>
+    <string name="cta_history_placeholder">open camera</string>
+
+    <string name="undo">undo</string>
+    <string name="oh_no">oh no</string>
+    <string name="error">this is awkward, you shouldn\'t\'ve been able to see this</string>
+    <string name="camera_not_found">can\'t seem to find your camera, sorry about that</string>
+</resources>
