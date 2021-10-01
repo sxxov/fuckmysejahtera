@@ -11,7 +11,6 @@ import design.sxxov.fuckmysejahtera.HistoryActivity;
 import design.sxxov.fuckmysejahtera.MainActivity;
 import design.sxxov.fuckmysejahtera.R;
 import design.sxxov.fuckmysejahtera.utilities.AsyncUtility;
-import design.sxxov.fuckmysejahtera.utilities.ImageUtility;
 import design.sxxov.fuckmysejahtera.utilities.SnackbarUtility;
 import design.sxxov.fuckmysejahtera.utilities.WindowUtility;
 
@@ -61,14 +60,14 @@ public class HistoryHolder extends HistoryTypedViewHolder {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        int[] titleMargins = new int[] {
+        int[] titleMargins = new int[]{
                 36,
                 28,
                 36,
                 0
         };
 
-        int[] descriptionMargins = new int[] {
+        int[] descriptionMargins = new int[]{
                 36,
                 9,
                 36,
@@ -101,7 +100,8 @@ public class HistoryHolder extends HistoryTypedViewHolder {
                     try {
                         HistoryHolder.this.ctx
                                 .delete(historyItem);
-                    } catch (IllegalArgumentException ignored) {}
+                    } catch (IllegalArgumentException ignored) {
+                    }
                 }
         );
     }
@@ -111,40 +111,38 @@ public class HistoryHolder extends HistoryTypedViewHolder {
             HistoryItem historyItem
     ) {
         historyItemBackgroundView.setOnClickListener(
-                (View view) -> {
-                    new AsyncUtility()
-                            .executeAsync(
-                                    () -> MainActivity.db
+                (View view) -> new AsyncUtility()
+                        .executeAsync(
+                                () -> MainActivity.db
                                         .historyDao()
                                         .getHTMLById(historyItem.id)
                                         .get(0)
                                         .html,
-                                    new AsyncUtility.Callback<>() {
+                                new AsyncUtility.Callback<>() {
                                     @Override
-                                        public void onComplete(String result) {
-                                            HistoryHolder.this.ctx.showHTML(
-                                                    result
-                                            );
-                                        }
-
-                                        @Override
-                                        public void onError(Exception e) {
-                                            if (e instanceof IndexOutOfBoundsException) {
-                                                new SnackbarUtility(HistoryHolder.this.ctx)
-                                                        .create(
-                                                                R.string.history_generic_unavailable,
-                                                                historyItemBackgroundView
-                                                        )
-                                                        .show();
-
-                                                return;
-                                            }
-
-                                            e.printStackTrace();
-                                        }
+                                    public void onComplete(String result) {
+                                        HistoryHolder.this.ctx.showHTML(
+                                                result
+                                        );
                                     }
-                            );
-                }
+
+                                    @Override
+                                    public void onError(Exception e) {
+                                        if (e instanceof IndexOutOfBoundsException) {
+                                            new SnackbarUtility(HistoryHolder.this.ctx)
+                                                    .create(
+                                                            R.string.history_generic_unavailable,
+                                                            historyItemBackgroundView
+                                                    )
+                                                    .show();
+
+                                            return;
+                                        }
+
+                                        e.printStackTrace();
+                                    }
+                                }
+                        )
         );
     }
 

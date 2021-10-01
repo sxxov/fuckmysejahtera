@@ -2,12 +2,12 @@
 <resources>
 
     <declare-styleable name="CTAppTheme">
-        <attr name="colourTextPrimary" format="color"/>
-        <attr name="colourTextSecondary" format="color"/>
-        <attr name="colourDivider" format="color"/>
-        <attr name="colourBackground" format="color"/>
+        <attr name="colourTextPrimary" format="color" />
+        <attr name="colourTextSecondary" format="color" />
+        <attr name="colourDivider" format="color" />
+        <attr name="colourBackground" format="color" />
         <attr name="colourCard" format="color" />
-        <attr name="placeholderIcon" format="integer"/>
+        <attr name="placeholderIcon" format="integer" />
     </declare-styleable>
 
 </resources>

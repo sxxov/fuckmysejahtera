@@ -3,17 +3,11 @@ package design.sxxov.fuckmysejahtera;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.webkit.ConsoleMessage;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -45,30 +39,24 @@ import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorat
 import me.everything.android.ui.overscroll.adapters.RecyclerViewOverScrollDecorAdapter;
 
 public class HistoryActivity extends Activity {
-    private boolean isRefreshing = false;
-
-    public BottomSheetBehavior<View> bottomSheetBehavior;
-    public WebView webView;
-    private WindowUtility windowUtility;
-    private HistoryAdapter adapter;
-
-    private ItemTouchHelper itemTouchHelper;
-
-    private RecyclerView historyRecyclerView;
-    private ImageView refreshImageView;
-    private ConstraintLayout historyAppBar;
-    private int historyAppBarHeight;
-    private int historyHeaderHeight;
-
     private static final ArrayList<HistoryItem> deletedItems = new ArrayList<>();
     private static final ArrayList<HistoryHTML> deletedImages = new ArrayList<>();
-    private String[] deleteSnackbarTexts;
-
     private final List<HistoryItem> items = new ArrayList<>();
+    public BottomSheetBehavior<View> bottomSheetBehavior;
+    public WebView webView;
+    private boolean isRefreshing = false;
+    private WindowUtility windowUtility;
+    private HistoryAdapter adapter;
+    private ItemTouchHelper itemTouchHelper;
+    private RecyclerView historyRecyclerView;
+    private ImageView refreshImageView;
+    private String[] deleteSnackbarTexts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.setContentViewResId(R.layout.activity_history);
+        super.setAppbarViewResId(R.id.history_appbar);
+        super.setScrollableViewResId(R.id.history_list);
         super.onCreate(savedInstanceState);
 
         this.bottomSheetBehavior = BottomSheetBehavior
@@ -82,8 +70,7 @@ public class HistoryActivity extends Activity {
         this.windowUtility = new WindowUtility(this);
         this.adapter = new HistoryAdapter(this);
         this.historyRecyclerView = this.findViewById(R.id.history_list);
-        this.refreshImageView = this.findViewById(R.id.refresh);
-        this.historyAppBar = this.findViewById(R.id.activity_history_appbar);
+        this.refreshImageView = this.findViewById(R.id.history_refresh);
         this.itemTouchHelper = new ItemTouchHelper(
                 this.getItemTouchHelperCallback()
         );
@@ -93,7 +80,7 @@ public class HistoryActivity extends Activity {
                                 this.historyRecyclerView
                         )
         );
-        this.deleteSnackbarTexts = new String[] {
+        this.deleteSnackbarTexts = new String[]{
                 this.getResources().getString(R.string.history_deleted1),
                 this.getResources().getString(R.string.history_deleted2),
                 this.getResources().getString(R.string.history_deleted3),
@@ -106,18 +93,10 @@ public class HistoryActivity extends Activity {
                 this.getResources().getString(R.string.history_deleted10)
         };
 
-//        this.scheduleRefresh();
-
         this.setupHistoryRecyclerView();
         this.setupPullToRefresh();
         this.setupVerticalSpaceItemDecorator();
         this.setupHistoryWebView();
-
-        this.historyHeaderHeight = windowUtility.getPx(367); // todo: not hardcode
-        this.historyAppBarHeight = this.historyHeaderHeight;
-
-        setAppBarLayoutHeight(this.historyHeaderHeight);
-        this.setupResponsiveAppBar();
 
         new AsyncUtility().executeAsync(() -> {
             this.items.addAll(
@@ -126,25 +105,8 @@ public class HistoryActivity extends Activity {
 
             this.adapter.submit(this.items);
 
-//            new Handler(Looper.getMainLooper()).post(() -> {
-////                this.adapter.notifyItemRangeInserted(1, this.items.size() - 1);
-//                this.adapter.submit(this.items);
-//            });
-
             return null;
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-//        this.scheduleRefresh();
-    }
-
-    private void setAppBarLayoutHeight(int px) {
-        this.historyAppBar.getLayoutParams().height = px;
-        this.historyAppBar.requestLayout();
     }
 
     private void setupVerticalSpaceItemDecorator() {
@@ -153,25 +115,6 @@ public class HistoryActivity extends Activity {
                         this.windowUtility.getPx(8)
                 )
         );
-    }
-
-    private void setupResponsiveAppBar() {
-        this.historyRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-//                historyAppBarHeight = Math.max(
-//                        historyAppBarHeight - dy,
-//                        historyHeaderHeight / 2
-//                );
-                historyAppBarHeight = Math.max(
-                        historyHeaderHeight - recyclerView.computeVerticalScrollOffset(),
-                        historyHeaderHeight / 3
-                );
-               HistoryActivity.this.setAppBarLayoutHeight(historyAppBarHeight);
-            }
-        });
     }
 
     private void setupPullToRefresh() {
@@ -202,8 +145,7 @@ public class HistoryActivity extends Activity {
                     );
                     this.refreshImageView.setRotation(offset / 2);
 
-//                    Log.d("overscroll:", ""+offset);
-//                    this.setAppBarLayoutHeight((int) (this.historyAppBarHeight + offset));
+                    this.getAppbar().setY(offset);
 
                     if (state == IOverScrollState.STATE_BOUNCE_BACK) {
                         this.refreshImageView.setScaleX(Math.max(offset / 1000, 1));
@@ -241,7 +183,10 @@ public class HistoryActivity extends Activity {
             }
 
             @Override
-            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+            public int getMovementFlags(
+                    @NonNull RecyclerView recyclerView,
+                    @NonNull RecyclerView.ViewHolder viewHolder
+            ) {
                 if (viewHolder instanceof HistoryHeader) {
                     return 0;
                 }
@@ -254,12 +199,19 @@ public class HistoryActivity extends Activity {
             }
 
             @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder source, @NonNull RecyclerView.ViewHolder target) {
+            public boolean onMove(
+                    @NonNull RecyclerView recyclerView,
+                    @NonNull RecyclerView.ViewHolder source,
+                    @NonNull RecyclerView.ViewHolder target
+            ) {
                 return false;
             }
 
             @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            public void onSwiped(
+                    @NonNull RecyclerView.ViewHolder viewHolder,
+                    int direction
+            ) {
                 HistoryActivity.this.delete(
                         HistoryActivity.this.adapter
                                 .getItem(
@@ -288,9 +240,9 @@ public class HistoryActivity extends Activity {
 
 //            new Handler(Looper.getMainLooper()).post(() -> {
 //                this.adapter.refresh();
-                this.adapter.submit(this.items);
+            this.adapter.submit(this.items);
 
-                this.isRefreshing = false;
+            this.isRefreshing = false;
 //            });
 
             return null;
@@ -313,7 +265,7 @@ public class HistoryActivity extends Activity {
         Snackbar snackbar = Snackbar
                 .make(
                         layout,
-                        text + " (trash: " + HistoryActivity.deletedItems.size() +")",
+                        text + " (trash: " + HistoryActivity.deletedItems.size() + ")",
                         Snackbar.LENGTH_INDEFINITE
                 )
                 .setAction(

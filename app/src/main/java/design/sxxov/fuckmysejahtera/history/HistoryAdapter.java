@@ -8,28 +8,22 @@ import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import design.sxxov.fuckmysejahtera.HistoryActivity;
 import design.sxxov.fuckmysejahtera.R;
 
 public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final AsyncListDiffer<HistoryItem> differ = new AsyncListDiffer<>(
-            this,
-            DIFF_CALLBACK
-    );
     public static final DiffUtil.ItemCallback<HistoryItem> DIFF_CALLBACK
-            = new DiffUtil.ItemCallback<HistoryItem>() {
+            = new DiffUtil.ItemCallback<>() {
         @Override
         public boolean areItemsTheSame(
                 @NonNull HistoryItem oldUser, @NonNull HistoryItem newUser) {
             // User properties may have changed if reloaded from the DB, but ID is fixed
             return oldUser.id == newUser.id;
         }
+
         @Override
         public boolean areContentsTheSame(
                 @NonNull HistoryItem oldUser, @NonNull HistoryItem newUser) {
@@ -38,18 +32,20 @@ public class HistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             return oldUser.id == newUser.id;
         }
     };
-
     public static final int HEADER_VIEW_TYPE = 0;
     public static final int HOLDER_VIEW_TYPE = 1;
     public static final int PLACEHOLDER_VIEW_TYPE = 2;
-
+    private final AsyncListDiffer<HistoryItem> differ = new AsyncListDiffer<>(
+            this,
+            DIFF_CALLBACK
+    );
     private final HistoryActivity ctx;
 
     public HistoryHeader historyHeader;
 
     public HistoryAdapter(
             HistoryActivity ctx
-        ) {
+    ) {
         this.ctx = ctx;
 
         super.setHasStableIds(true);

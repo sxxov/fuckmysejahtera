@@ -13,20 +13,18 @@ import design.sxxov.fuckmysejahtera.blocks.interfaces.common.Item;
 
 @Entity
 public class HistoryItem implements Item {
-    @PrimaryKey
-    public long id;
-
     public static final String LOCATION_KEY = "location";
     public static final String TIME_KEY = "time";
 
-
+    @PrimaryKey
+    public long id;
     @ColumnInfo(name = LOCATION_KEY)
     public String location;
     @ColumnInfo(name = TIME_KEY)
     public String time;
 
     public Map<String, String> toMap() {
-        return new HashMap<String, String>() {
+        return new HashMap<>() {
             {
                 put(LOCATION_KEY, location);
                 put(TIME_KEY, time);

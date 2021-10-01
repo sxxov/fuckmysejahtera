@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class HistoryVerticalSpaceItemDecorator extends RecyclerView.ItemDecoration {
-
     private final int verticalSpaceHeight;
 
     public HistoryVerticalSpaceItemDecorator(int verticalSpaceHeight) {
@@ -26,8 +25,8 @@ public class HistoryVerticalSpaceItemDecorator extends RecyclerView.ItemDecorati
                 ==
                 HistoryAdapter.HOLDER_VIEW_TYPE
         ) {
-                // set the bottom offset to the specified height
-                outRect.top = verticalSpaceHeight;
+            // set the bottom offset to the specified height
+            outRect.top = verticalSpaceHeight;
         }
 
         // determine if it's the last holder

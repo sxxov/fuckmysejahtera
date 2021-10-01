@@ -19,7 +19,7 @@ public class ImageUtility {
 
     public static Bitmap stringToBitmap(String base64Str) throws IllegalArgumentException {
         byte[] decodedBytes = Base64.decode(
-                base64Str.substring(base64Str.indexOf(",")  + 1),
+                base64Str.substring(base64Str.indexOf(",") + 1),
                 Base64.DEFAULT
         );
 

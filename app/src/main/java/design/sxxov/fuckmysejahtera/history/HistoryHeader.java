@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import design.sxxov.fuckmysejahtera.R;
 
@@ -16,12 +15,12 @@ public class HistoryHeader extends HistoryTypedViewHolder {
     ) {
         super(
                 LayoutInflater
-                .from(ctx)
-                .inflate(
-                        R.layout.history_header,
-                        parent,
-                        false
-                )
+                        .from(ctx)
+                        .inflate(
+                                R.layout.history_header,
+                                parent,
+                                false
+                        )
         );
     }
 

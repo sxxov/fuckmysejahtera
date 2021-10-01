@@ -6,6 +6,8 @@ import java.util.Map;
 
 public interface ItemFactory<T> {
     T fromMap(Map<String, String> map);
+
     T fromJSON(JSONObject jsonObject);
+
     T fromJSONString(String jsonString);
 }

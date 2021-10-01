@@ -13,17 +13,16 @@ import design.sxxov.fuckmysejahtera.blocks.interfaces.common.Item;
 
 @Entity
 public class HistoryHTML implements Item {
-    @PrimaryKey
-    public long id;
-
     public static final String HTML_KEY = "html";
 
+    @PrimaryKey
+    public long id;
     @ColumnInfo(name = HTML_KEY)
     public String html;
 
 
     public Map<String, String> toMap() {
-        return new HashMap<String, String>() {
+        return new HashMap<>() {
             {
                 put(HTML_KEY, html);
             }

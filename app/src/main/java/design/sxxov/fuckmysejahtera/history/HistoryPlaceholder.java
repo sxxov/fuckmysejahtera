@@ -5,10 +5,6 @@ import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.github.clans.fab.FloatingActionButton;
-
 import design.sxxov.fuckmysejahtera.R;
 
 public class HistoryPlaceholder extends HistoryTypedViewHolder {
