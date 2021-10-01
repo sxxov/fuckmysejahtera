@@ -1,13 +1,9 @@
 package design.sxxov.fuckmysejahtera;
 
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-import androidx.room.Room;
-
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.Editable;
@@ -22,11 +18,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.room.Room;
+
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import design.sxxov.fuckmysejahtera.blocks.classes.Activity;
 import design.sxxov.fuckmysejahtera.db.AppDatabase;
@@ -36,15 +40,25 @@ import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public class MainActivity extends Activity {
+    public static AppDatabase db;
+    private final HashMap<Integer, AnimatorSet> buttonIdToAnimatorSet = new HashMap<>() {
+        {
+            put(R.id.main_input_button_risk_low, new AnimatorSet());
+            put(R.id.main_input_button_risk_high, new AnimatorSet());
+            put(R.id.main_input_button_vaccination_true, new AnimatorSet());
+            put(R.id.main_input_button_vaccination_false, new AnimatorSet());
+        }
+    };
     private Snackbar snackbar;
     private BottomSheetBehavior<ConstraintLayout> bottomSheetHelpBehavior;
-    private final AnimatorSet animatorSetButtonRiskLow = new AnimatorSet();
-    private final AnimatorSet animatorSetButtonRiskHigh = new AnimatorSet();
-    public static AppDatabase db;
+    private float lastDownTouchEventX;
+    private float lastDownTouchEventY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.setContentViewResId(R.layout.activity_main);
+        super.setAppbarViewResId(R.id.main_appbar);
+        super.setScrollableViewResId(R.id.main_scroll);
         super.onCreate(savedInstanceState);
 
         MainActivity.db = Room
@@ -60,29 +74,23 @@ public class MainActivity extends Activity {
         final String from = intent.getStringExtra("from");
 
         this.setupOverScroll(
-                this.findViewById(R.id.layout_scroll_activity_main)
+                this.findViewById(R.id.main_scroll)
         );
         this.setupEditTexts(
-                this.findViewById(R.id.input_name),
-                this.findViewById(R.id.input_contact)
-        );
-        this.setupButtons(
-                this.findViewById(R.id.input_button_risk_low),
-                this.findViewById(R.id.input_button_risk_high)
+                this.findViewById(R.id.main_input_name),
+                this.findViewById(R.id.main_input_contact)
         );
         this.setupHamburger(
-                this.findViewById(R.id.input_menu_hamburger)
+                this.findViewById(R.id.main_input_menu_hamburger)
         );
         this.setupBottomSheet(
                 this.findViewById(R.id.layout_bottom_sheet_help)
         );
         this.setupLayoutScroll(
-                this.findViewById(R.id.layout_scroll_activity_main)
+                this.findViewById(R.id.main_scroll)
         );
-        this.setupButtonsAnimationSet(
-                this.findViewById(R.id.input_button_risk_low),
-                this.findViewById(R.id.input_button_risk_high)
-        );
+        this.applyStateToButtons();
+        this.setupButtonsAnimationSet();
 
         if (from != null
                 && from.equals(ReceiptActivity.class.getSimpleName())) {
@@ -111,6 +119,7 @@ public class MainActivity extends Activity {
     // stolen from https://stackoverflow.com/questions/36104379/how-to-dismiss-a-snackbar-when-user-interact-elsewhere
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        //#region dismiss snackbar
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             // dismiss snackBar
             if (this.snackbar != null
@@ -126,6 +135,52 @@ public class MainActivity extends Activity {
                 }
             }
         }
+        //#endregion
+
+        //#region dismiss keyboard
+        // https://stackoverflow.com/a/61290481
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            this.lastDownTouchEventX = ev.getRawX();
+            this.lastDownTouchEventY = ev.getRawY();
+        }
+
+        if (ev.getAction() == MotionEvent.ACTION_UP) {
+            View v = getCurrentFocus();
+            int x = (int) ev.getRawX();
+            int y = (int) ev.getRawY();
+
+            // Was it a scroll - If skip all
+            if (Math.abs(this.lastDownTouchEventX - x) > 5
+                    || Math.abs(this.lastDownTouchEventY - y) > 5) {
+                return super.dispatchTouchEvent(ev);
+            }
+
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+
+                if (!outRect.contains(x, y)) {
+                    boolean touchTargetIsEditText = false;
+
+                    // Check if another editText has been touched
+                    for (View vi : v.getRootView().getTouchables()) {
+                        if (vi instanceof EditText) {
+                            Rect clickedViewRect = new Rect();
+                            vi.getGlobalVisibleRect(clickedViewRect);
+
+                            if (clickedViewRect.contains(x, y)) {
+                                touchTargetIsEditText = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!touchTargetIsEditText) this.dismissSoftKeyboard();
+                    v.clearFocus();
+                }
+            }
+        }
+        //#endregion
 
         return super.dispatchTouchEvent(ev);
     }
@@ -156,7 +211,7 @@ public class MainActivity extends Activity {
             View inputMenuHamburgerButtonToggleSun
     ) {
         this.bottomSheetHelpBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        this.findViewById(R.id.overlay_bottom_sheet).setVisibility(View.VISIBLE);
+        this.findViewById(R.id.main_overlay_bottom_sheet).setVisibility(View.VISIBLE);
     }
 
     public void onInputButtonSaveClick(View inputButtonSave) {
@@ -199,77 +254,62 @@ public class MainActivity extends Activity {
         this.snackbar.show();
     }
 
-    public void onInputButtonRiskLowClick(View inputButtonRiskLow) {
+    public void onInputButtonVaccinationTrueClick(View v) {
+        this.state.isVaccinated = true;
+
+        this.runButtonAnimation((Button) v);
+        this.applyStateToButtons();
+    }
+
+    public void onInputButtonVaccinationFalseClick(View v) {
+        this.state.isVaccinated = false;
+
+        this.runButtonAnimation((Button) v);
+        this.applyStateToButtons();
+    }
+
+    public void onInputButtonRiskLowClick(View v) {
         this.state.isHighRisk = false;
 
-        this.animatorSetButtonRiskLow.cancel();
-        this.animatorSetButtonRiskLow.start();
-
-        this.setupButtons(
-                (Button) inputButtonRiskLow,
-                this.findViewById(R.id.input_button_risk_high)
-        );
+        this.runButtonAnimation((Button) v);
+        this.applyStateToButtons();
     }
 
-    public void onInputButtonRiskHighClick(View inputButtonRiskHigh) {
+    public void onInputButtonRiskHighClick(View v) {
         this.state.isHighRisk = true;
 
-        this.animatorSetButtonRiskHigh.cancel();
-        this.animatorSetButtonRiskHigh.start();
-
-        this.setupButtons(
-                this.findViewById(R.id.input_button_risk_low),
-                (Button) inputButtonRiskHigh
-        );
+        this.runButtonAnimation((Button) v);
+        this.applyStateToButtons();
     }
 
-    private void setupButtonsAnimationSet(
-            Button buttonRiskLow,
-            Button buttonRiskHigh
-    ) {
-        final AnimatorSet animatorSetLow = this.animatorSetButtonRiskLow;
-        final AnimatorSet animatorSetHigh = this.animatorSetButtonRiskHigh;
+    // can probably use a factory for this
+    private void setupButtonsAnimationSet() {
+        for (Map.Entry<Integer, AnimatorSet> entry : this.buttonIdToAnimatorSet.entrySet()) {
+            final Button button = this.findViewById(entry.getKey());
+            final AnimatorSet animatorSet = entry.getValue();
 
-        ObjectAnimator animatorScaleXLow = ObjectAnimator.ofFloat(
-                buttonRiskLow,
-                "scaleX",
-                0.95f,
-                1
-        );
+            ObjectAnimator animatorScaleX = ObjectAnimator.ofFloat(
+                    button,
+                    "scaleX",
+                    0.95f,
+                    1
+            );
 
-        ObjectAnimator animatorScaleYLow = ObjectAnimator.ofFloat(
-                buttonRiskLow,
-                "scaleY",
-                0.95f,
-                1
-        );
+            ObjectAnimator animatorScaleY = ObjectAnimator.ofFloat(
+                    button,
+                    "scaleY",
+                    0.95f,
+                    1
+            );
 
-        ObjectAnimator animatorScaleXHigh = ObjectAnimator.ofFloat(
-                buttonRiskHigh,
-                "scaleX",
-                0.95f,
-                1
-        );
+            animatorSet
+                    .play(animatorScaleX)
+                    .with(animatorScaleY);
 
-        ObjectAnimator animatorScaleYHigh = ObjectAnimator.ofFloat(
-                buttonRiskHigh,
-                "scaleY",
-                0.95f,
-                1
-        );
+            animatorSet.setInterpolator(new OvershootInterpolator());
 
-        animatorSetLow
-                .play(animatorScaleXLow)
-                .with(animatorScaleYLow);
-        animatorSetHigh
-                .play(animatorScaleXHigh)
-                .with(animatorScaleYHigh);
-
-        animatorSetLow.setInterpolator(new OvershootInterpolator());
-        animatorSetHigh.setInterpolator(new OvershootInterpolator());
-
-        animatorSetLow.setDuration(300);
-        animatorSetHigh.setDuration(300);
+            animatorSet.setDuration(300);
+        }
     }
 
     private void setupLayoutScroll(
@@ -277,15 +317,15 @@ public class MainActivity extends Activity {
     ) {
         IOverScrollDecor overScrollDecor = OverScrollDecoratorHelper.setUpOverScroll(layoutScroll);
 
-        overScrollDecor.setOverScrollStateListener(
-                (decor, oldState, newState) -> this.dismissSoftKeyboard()
+        overScrollDecor.setOverScrollUpdateListener(
+                (decor, state1, offset) -> this.getAppbar().setY(offset)
         );
     }
 
     private void setupBottomSheet(
             ConstraintLayout bottomSheetDialogHelp
     ) {
-        final View overlayBottomSheet = this.findViewById(R.id.overlay_bottom_sheet);
+        final View overlayBottomSheet = this.findViewById(R.id.main_overlay_bottom_sheet);
 
         this.bottomSheetHelpBehavior = BottomSheetBehavior
                 .from(bottomSheetDialogHelp);
@@ -302,7 +342,8 @@ public class MainActivity extends Activity {
                             }
 
                             @Override
-                            public void onSlide(@NonNull View view, float offset) {}
+                            public void onSlide(@NonNull View view, float offset) {
+                            }
                         });
     }
 
@@ -338,8 +379,12 @@ public class MainActivity extends Activity {
         animatorSetClosed.setDuration(400);
 
         try {
-            final Field fieldOpen = FloatingActionMenu.class.getDeclaredField("mOpenAnimatorSet");
-            final Field fieldClosed = FloatingActionMenu.class.getDeclaredField("mCloseAnimatorSet");
+            final Field fieldOpen = FloatingActionMenu
+                    .class
+                    .getDeclaredField("mOpenAnimatorSet");
+            final Field fieldClosed = FloatingActionMenu
+                    .class
+                    .getDeclaredField("mCloseAnimatorSet");
 
             fieldOpen.setAccessible(true);
             fieldClosed.setAccessible(true);
@@ -371,7 +416,8 @@ public class MainActivity extends Activity {
 
         editTextName.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -379,12 +425,14 @@ public class MainActivity extends Activity {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void afterTextChanged(Editable editable) {
+            }
         });
 
         editTextContact.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -392,31 +440,59 @@ public class MainActivity extends Activity {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void afterTextChanged(Editable editable) {
+            }
         });
     }
 
-    private void setupButtons(
-            Button buttonRiskLow,
-            Button buttonRiskHigh
-    ) {
-        boolean isHighRisk = this.state.isHighRisk;
+    private void runButtonAnimation(Button button) {
+        AnimatorSet animatorSet = Objects.requireNonNull(
+                this.buttonIdToAnimatorSet.get(
+                        button.getId()
+                )
+        );
+
+        animatorSet.cancel();
+        animatorSet.start();
+    }
+
+    private void applyStateToButtons() {
+        Button buttonRiskLow = this.findViewById(R.id.main_input_button_risk_low);
+        Button buttonRiskHigh = this.findViewById(R.id.main_input_button_risk_high);
+        Button buttonVaccinationTrue = this.findViewById(R.id.main_input_button_vaccination_true);
+        Button buttonVaccinationFalse = this.findViewById(R.id.main_input_button_vaccination_false);
+
+        ColorStateList colourBad = ContextCompat.getColorStateList(
+                this,
+                R.color.colorBad
+        );
+
+        ColorStateList colourGood = ContextCompat.getColorStateList(
+                this,
+                R.color.colorGood
+        );
 
         buttonRiskHigh.setBackgroundTintList(
-                isHighRisk
-                        ? ContextCompat.getColorStateList(
-                                this,
-                                 R.color.colorBad
-                        )
+                this.state.isHighRisk
+                        ? colourBad
                         : null
         );
 
         buttonRiskLow.setBackgroundTintList(
-                !isHighRisk
-                        ? ContextCompat.getColorStateList(
-                                this,
-                                R.color.colorGood
-                        )
+                !this.state.isHighRisk
+                        ? colourGood
+                        : null
+        );
+
+        buttonVaccinationFalse.setBackgroundTintList(
+                !this.state.isVaccinated
+                        ? colourBad
+                        : null
+        );
+
+        buttonVaccinationTrue.setBackgroundTintList(
+                this.state.isVaccinated
+                        ? colourGood
                         : null
         );
     }
