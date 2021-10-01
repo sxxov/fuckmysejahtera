@@ -8,9 +8,13 @@
     <string name="input_name">name</string>
     <string name="input_contact">phone number</string>
     <string name="input_risk">risk factor</string>
+    <string name="input_vaccination">vaccinated</string>
 
     <string name="option_risk_low">low</string>
     <string name="option_risk_high">high</string>
+
+    <string name="option_vaccination_true">yes</string>
+    <string name="option_vaccination_false">no</string>
 
     <string name="snackbar_save_complete">successfully saved!</string>
     <string name="snackbar_save_name_empty">name is not filled in</string>
@@ -51,4 +55,8 @@
     <string name="oh_no">oh no</string>
     <string name="error">this is awkward, you shouldn\'t\'ve been able to see this</string>
     <string name="camera_not_found">can\'t seem to find your camera, sorry about that</string>
+
+    <string name="help_icon_desc1">Pencil icon</string>
+    <string name="help_icon_desc2">Camera icon</string>
+    <string name="help_icon_desc3">Thumbs up icon</string>
 </resources>
