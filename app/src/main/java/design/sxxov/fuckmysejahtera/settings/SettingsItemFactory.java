@@ -10,39 +10,39 @@ import java.util.Map;
 import design.sxxov.fuckmysejahtera.blocks.interfaces.common.ItemFactory;
 
 public class SettingsItemFactory implements ItemFactory<SettingsItem> {
-    public SettingsItem create(
-            boolean nightMode,
-            String name,
-            String contact,
-            boolean isHighRisk
-    ) {
-        SettingsItem settingsItem = new SettingsItem();
-
-        settingsItem.isNightMode = nightMode;
-        settingsItem.name = name;
-        settingsItem.contact = contact;
-        settingsItem.isHighRisk = isHighRisk;
-
-        return settingsItem;
-    }
-
     public SettingsItem fromMap(Map<String, String> map) {
-        return this.create(
-                Boolean.parseBoolean(map.get(SettingsItem.IS_NIGHT_MODE_KEY)),
-                map.get(SettingsItem.NAME_KEY),
-                map.get(SettingsItem.CONTACT_KEY),
-                Boolean.parseBoolean(map.get(SettingsItem.IS_HIGH_RISK))
-        );
+        return new SettingsItem() {
+            {
+                isNightMode = Boolean.parseBoolean(map.get(SettingsItem.IS_NIGHT_MODE_KEY));
+                name = map.get(SettingsItem.NAME_KEY);
+                contact = map.get(SettingsItem.CONTACT_KEY);
+                isHighRisk = Boolean.parseBoolean(map.get(SettingsItem.IS_HIGH_RISK));
+                isVaccinated = Boolean.parseBoolean(map.get(SettingsItem.IS_VACCINATED));
+
+                this.applyDefaults();
+            }
+        };
     }
 
     public SettingsItem fromJSON(JSONObject jsonObject) {
         try {
-            return this.create(
-                    Boolean.parseBoolean(jsonObject.getString(SettingsItem.IS_NIGHT_MODE_KEY)),
-                    jsonObject.getString(SettingsItem.NAME_KEY),
-                    jsonObject.getString(SettingsItem.CONTACT_KEY),
-                    Boolean.parseBoolean(jsonObject.getString(SettingsItem.IS_HIGH_RISK))
-            );
+            return new SettingsItem() {
+                {
+                    isNightMode = Boolean.parseBoolean(
+                            jsonObject.getString(SettingsItem.IS_NIGHT_MODE_KEY)
+                    );
+                    name = jsonObject.getString(SettingsItem.NAME_KEY);
+                    contact = jsonObject.getString(SettingsItem.CONTACT_KEY);
+                    isHighRisk = Boolean.parseBoolean(
+                            jsonObject.getString(SettingsItem.IS_HIGH_RISK)
+                    );
+                    isVaccinated = Boolean.parseBoolean(
+                            jsonObject.getString(SettingsItem.IS_VACCINATED)
+                    );
+
+                    this.applyDefaults();
+                }
+            };
         } catch (JSONException jsonException) {
             Log.e(
                     this.getClass().getSimpleName(),
