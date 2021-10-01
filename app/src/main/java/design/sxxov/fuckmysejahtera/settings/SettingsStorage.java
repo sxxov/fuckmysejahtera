@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class SettingsStorage {
     private final SharedPreferences sharedPreferences;
+    private final Context ctx;
 
     public SettingsStorage(Context ctx) {
         this.sharedPreferences = ctx
@@ -15,6 +16,7 @@ public class SettingsStorage {
                         "settings",
                         Context.MODE_PRIVATE
                 );
+        this.ctx = ctx;
     }
 
     public SettingsItem get() {
@@ -27,7 +29,7 @@ public class SettingsStorage {
             }
         }
 
-        return new SettingsItemFactory().fromMap(stringSharedPreferences);
+        return new SettingsItemFactory().fromMap(stringSharedPreferences, this.ctx);
     }
 
     public String get(String key) {
@@ -71,7 +73,7 @@ public class SettingsStorage {
         this.set(SettingsItem.IS_NIGHT_MODE_KEY, settingsItem.isNightMode);
         this.set(SettingsItem.NAME_KEY, settingsItem.name);
         this.set(SettingsItem.CONTACT_KEY, settingsItem.contact);
-        this.set(SettingsItem.IS_HIGH_RISK, settingsItem.isHighRisk);
-        this.set(SettingsItem.IS_VACCINATED, settingsItem.isVaccinated);
+        this.set(SettingsItem.IS_HIGH_RISK_KEY, settingsItem.isHighRisk);
+        this.set(SettingsItem.IS_VACCINATED_KEY, settingsItem.isVaccinated);
     }
 }
