@@ -6,10 +6,13 @@
         <entry key="..\:/__Projects/Android Studio/FuckMySejahtera/app/src/main/res/drawable/bottom_sheet_background_semi_rounded.xml" value="0.38333333333333336" />
         <entry key="..\:/__Projects/Android Studio/FuckMySejahtera/app/src/main/res/drawable/round.xml" value="0.38333333333333336" />
         <entry key="..\:/__Projects/Android Studio/FuckMySejahtera/app/src/main/res/drawable/snackbar_shape.xml" value="0.38333333333333336" />
+        <entry key="..\:/__Projects/Android Studio/FuckMySejahtera/app/src/main/res/layout/activity_history.xml" value="0.17792792792792791" />
+        <entry key="..\:/__Projects/Android Studio/FuckMySejahtera/app/src/main/res/layout/activity_main.xml" value="0.16666666666666666" />
         <entry key="..\:/__Projects/Android Studio/FuckMySejahtera/app/src/main/res/layout/activity_receipt.xml" value="0.3671875" />
         <entry key="..\:/__Projects/Android Studio/FuckMySejahtera/app/src/main/res/layout/bottom_sheet_help.xml" value="0.2821557971014493" />
         <entry key="..\:/__Projects/Android Studio/FuckMySejahtera/app/src/main/res/layout/bottom_sheet_html.xml" value="0.20208333333333334" />
         <entry key="..\:/__Projects/Android Studio/FuckMySejahtera/app/src/main/res/layout/bottom_sheet_image.xml" value="0.2821557971014493" />
+        <entry key="..\:/__Projects/Android Studio/FuckMySejahtera/app/src/main/res/layout/history_item.xml" value="0.17792792792792791" />
       </map>
     </option>
   </component>
