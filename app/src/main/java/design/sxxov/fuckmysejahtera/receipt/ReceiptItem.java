@@ -35,14 +35,4 @@ public class ReceiptItem implements Item {
             }
         };
     }
-
-    @Override
-    public JSONObject toJSON() {
-        return null;
-    }
-
-    @Override
-    public String toJSONString() {
-        return null;
-    }
 }
