@@ -5,12 +5,10 @@ import android.content.res.Resources;
 import android.util.TypedValue;
 
 public class WindowUtility {
-    private Context ctx;
-    private Resources resources;
+    private final Resources resources;
 
     public WindowUtility(Context ctx) {
-        this.ctx = ctx;
-        this.resources = this.ctx.getResources();
+        this.resources = ctx.getResources();
     }
 
     public int getStatusBarHeight() {
@@ -30,12 +28,10 @@ public class WindowUtility {
     }
 
     public int getPx(int dp) {
-        Resources r = this.resources;
-
         return (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 dp,
-                r.getDisplayMetrics()
+                this.resources.getDisplayMetrics()
         );
     }
 }

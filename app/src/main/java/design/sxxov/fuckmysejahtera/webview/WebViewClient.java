@@ -3,7 +3,6 @@ package design.sxxov.fuckmysejahtera.webview;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -17,7 +16,7 @@ import design.sxxov.fuckmysejahtera.utilities.ResourceUtility;
 import design.sxxov.fuckmysejahtera.utilities.SnackbarUtility;
 
 public class WebViewClient extends android.webkit.WebViewClient {
-    private Activity ctx;
+    private final Activity ctx;
 
     public WebViewClient(Activity ctx) {
         this.ctx = ctx;
@@ -46,10 +45,10 @@ public class WebViewClient extends android.webkit.WebViewClient {
                 "about:blank",
                 "<body style=\"margin:0;display:block;background:#"
                         + Integer.toHexString(
-                                resourceUtility.getAttrColour(
-                                        R.attr.colourBackground
-                                )
+                        resourceUtility.getAttrColour(
+                                R.attr.colourBackground
                         )
+                )
                         // remove java alpha which is first 2 chars
                         // while css alpha is last 2 chars
                         .substring(2)
@@ -74,12 +73,6 @@ public class WebViewClient extends android.webkit.WebViewClient {
                 .show();
 
         super.onReceivedError(webView, request, error);
-    }
-
-    @SuppressLint("JavascriptInterface")
-    public static void evaluateJavascriptAsync(WebView webView, String script, ValueCallback<String> callback) {
-        webView.addJavascriptInterface(callback, "__bridge__");
-        webView.evaluateJavascript("__bridge__.onReceiveValue(" + script + ")", null);
     }
 
     @Override
