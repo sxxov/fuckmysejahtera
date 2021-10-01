@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -22,16 +22,14 @@
     </style>
 
     <!-- Snackbar -->
-    <style
-        name="TextAppearance.Design.Snackbar.Message"
-        parent="android:TextAppearance"
-        tools:override="true">
+    <style name="TextAppearance.Design.Snackbar.Message" parent="android:TextAppearance" tools:override="true">
         <item name="android:fontFamily">@font/space_mono</item>
         <item name="android:textColor">?attr/colourTextPrimary</item>
         <item name="android:gravity">center</item>
         <item name="android:textAlignment">center</item>
         <item name="android:layout_width">match_parent</item>
     </style>
+
     <style name="Snackbar" parent="Widget.MaterialComponents.Snackbar">
         <item name="android:background">@drawable/common_background_rounded_accented</item>
         <item name="android:paddingTop">3dp</item>
@@ -85,7 +83,7 @@
     </style>
 
     <!-- Dark base activity theme -->
-    <style name="ActivityTheme.Primary.Base.Dark"    parent="AppTheme">
+    <style name="ActivityTheme.Primary.Base.Dark" parent="AppTheme">
         <item name="colourTextPrimary">@color/colorLight</item>
         <item name="colourTextSecondary">@color/colorLightDark</item>
         <item name="colourBackground">@color/colorPrimaryDark</item>
