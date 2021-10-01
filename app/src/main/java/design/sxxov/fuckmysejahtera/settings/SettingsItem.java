@@ -13,8 +13,8 @@ public class SettingsItem implements Item {
     public static final String IS_NIGHT_MODE_KEY = "isNightMode";
     public static final String NAME_KEY = "name";
     public static final String CONTACT_KEY = "contact";
-    public static final String IS_HIGH_RISK = "isHighRisk";
-    public static final String IS_VACCINATED = "isVaccinated";
+    public static final String IS_HIGH_RISK_KEY = "isHighRisk";
+    public static final String IS_VACCINATED_KEY = "isVaccinated";
 
     public boolean isNightMode;
     @Nullable
@@ -24,22 +24,14 @@ public class SettingsItem implements Item {
     public boolean isHighRisk;
     public boolean isVaccinated;
 
-    public SettingsItem() {
-        this.applyDefaults();
-    }
-
-    protected void applyDefaults() {
-        this.isVaccinated = true;
-    }
-
     public Map<String, String> toMap() {
         return new HashMap<>() {
             {
                 put(IS_NIGHT_MODE_KEY, Boolean.toString(isNightMode));
                 put(NAME_KEY, name);
                 put(CONTACT_KEY, contact);
-                put(IS_HIGH_RISK, Boolean.toString(isHighRisk));
-                put(IS_VACCINATED, Boolean.toString((isVaccinated)));
+                put(IS_HIGH_RISK_KEY, Boolean.toString(isHighRisk));
+                put(IS_VACCINATED_KEY, Boolean.toString((isVaccinated)));
             }
         };
     }
