@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Base64;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
@@ -62,6 +63,10 @@ public class ReceiptActivity extends Activity {
         webView.loadUrl(URL);
     }
 
+    public void onExitButtonClick(View v) {
+        this.finish();
+    }
+
     // stolen from https://stackoverflow.com/questions/2354336/how-to-exit-when-back-button-is-pressed
     @Override
     public void onBackPressed() {
@@ -74,11 +79,14 @@ public class ReceiptActivity extends Activity {
         this.finish();
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"SetJavaScriptEnabled", "ClickableViewAccessibility"})
     private void setupWebView(WebView webView) {
         webView
                 .getSettings()
                 .setJavaScriptEnabled(true);
+        webView.setVerticalScrollBarEnabled(false);
+        webView.setHorizontalScrollBarEnabled(false);
+        webView.setOnTouchListener((v, event) -> true);
         // 0. lmao what the fuck
         // 2. injects js into the page to loop on a promise until elem is resolved
         webView
