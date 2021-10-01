@@ -97,16 +97,7 @@ public class HistoryActivity extends Activity {
         this.setupPullToRefresh();
         this.setupVerticalSpaceItemDecorator();
         this.setupHistoryWebView();
-
-        new AsyncUtility().executeAsync(() -> {
-            this.items.addAll(
-                    MainActivity.db.historyDao().getItems()
-            );
-
-            this.adapter.submit(this.items);
-
-            return null;
-        });
+        this.scheduleRefresh();
     }
 
     private void setupVerticalSpaceItemDecorator() {
@@ -162,7 +153,7 @@ public class HistoryActivity extends Activity {
                     if (offset == 0
                             && isPulled.get()) {
                         isPulled.set(false);
-                        HistoryActivity.this.adapter.notifyDataSetChanged();
+                        HistoryActivity.this.scheduleRefresh();
                     }
 
                     // change visibility
@@ -235,15 +226,8 @@ public class HistoryActivity extends Activity {
                     MainActivity.db.historyDao().getItems()
             );
 
-//            this.adapter.items.clear();
-//            this.adapter.items.addAll(this.items);
-
-//            new Handler(Looper.getMainLooper()).post(() -> {
-//                this.adapter.refresh();
             this.adapter.submit(this.items);
-
             this.isRefreshing = false;
-//            });
 
             return null;
         });
