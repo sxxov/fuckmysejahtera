@@ -4,6 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/__Projects/Android Studio/FuckMySejahtera/app/src/main/res/drawable/bottom_sheet_background_semi_rounded.xml" value="0.38333333333333336" />
+        <entry key="..\:/__Projects/Android Studio/FuckMySejahtera/app/src/main/res/drawable/ic_exit.xml" value="0.3418918918918919" />
+        <entry key="..\:/__Projects/Android Studio/FuckMySejahtera/app/src/main/res/drawable/ic_help.xml" value="0.33153153153153153" />
+        <entry key="..\:/__Projects/Android Studio/FuckMySejahtera/app/src/main/res/drawable/ic_sun.xml" value="0.33153153153153153" />
+        <entry key="..\:/__Projects/Android Studio/FuckMySejahtera/app/src/main/res/drawable/ic_x.xml" value="0.33153153153153153" />
         <entry key="..\:/__Projects/Android Studio/FuckMySejahtera/app/src/main/res/drawable/round.xml" value="0.38333333333333336" />
         <entry key="..\:/__Projects/Android Studio/FuckMySejahtera/app/src/main/res/drawable/snackbar_shape.xml" value="0.38333333333333336" />
         <entry key="..\:/__Projects/Android Studio/FuckMySejahtera/app/src/main/res/layout/activity_history.xml" value="0.17792792792792791" />
