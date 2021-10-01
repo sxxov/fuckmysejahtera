@@ -12,8 +12,8 @@ import com.google.android.material.snackbar.Snackbar;
 import design.sxxov.fuckmysejahtera.R;
 
 public class SnackbarUtility {
-    private Context ctx;
-    private ResourceUtility resourceUtility;
+    private final Context ctx;
+    private final ResourceUtility resourceUtility;
 
     public SnackbarUtility(Activity ctx) {
         this.ctx = ctx;
@@ -50,7 +50,8 @@ public class SnackbarUtility {
 
         snackbar.setAction(
                 R.string.snackbar_common_action_ok,
-                v -> {}
+                v -> {
+                }
         );
 
         snackbar
