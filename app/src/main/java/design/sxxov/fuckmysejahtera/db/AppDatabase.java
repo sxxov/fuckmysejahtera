@@ -2,8 +2,6 @@ package design.sxxov.fuckmysejahtera.db;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
-import androidx.room.migration.Migration;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import design.sxxov.fuckmysejahtera.db.daos.HistoryDao;
 import design.sxxov.fuckmysejahtera.history.HistoryHTML;

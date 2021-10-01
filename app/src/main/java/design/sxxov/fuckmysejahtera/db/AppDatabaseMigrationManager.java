@@ -13,7 +13,7 @@ public class AppDatabaseMigrationManager {
     };
 
     public static Migration[] getMigrations() {
-        return new Migration[] {
+        return new Migration[]{
                 MIGRATION_1_2
         };
     }
