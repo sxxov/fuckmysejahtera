@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">No MySejahtera</string>
 
-    <string name="title_configure">define\nyourself</string>
-    <string name="title_help">how i work</string>
-    <string name="title_history">scan\nhistory</string>
+    <string name="title_configure">define who you are:</string>
+    <string name="title_help">how i work:</string>
+    <string name="title_history">scan\nhistory:</string>
 
     <string name="input_name">name</string>
     <string name="input_contact">phone number</string>
