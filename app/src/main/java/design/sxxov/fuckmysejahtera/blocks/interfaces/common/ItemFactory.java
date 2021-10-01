@@ -1,5 +1,6 @@
 package design.sxxov.fuckmysejahtera.blocks.interfaces.common;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -9,5 +10,5 @@ public interface ItemFactory<T> {
 
     T fromJSON(JSONObject jsonObject);
 
-    T fromJSONString(String jsonString);
+    T fromJSONString(String jsonString) throws JSONException;
 }
