@@ -43,21 +43,9 @@ public class Activity extends AppCompatActivity {
         return this.initialAppbarHeight;
     }
 
-    protected void setInitialAppbarHeight(int initialAppbarHeight) {
-        this.appbar.getLayoutParams().height = initialAppbarHeight;
-
-        if (this.isAppbarLayoutScheduled.get())
-            return;
-
-        this.isAppbarLayoutScheduled.set(true);
-
-        this.appbar.postOnAnimation(() -> {
-            if (!this.isAppbarLayoutScheduled.get())
-                return;
-
-            this.isAppbarLayoutScheduled.set(false);
-            this.appbar.requestLayout();
-        });
+    protected void setAppbarHeight(int appbarHeight) {
+        this.appbar.getLayoutParams().height = appbarHeight;
+        this.appbar.requestLayout();
     }
 
     protected void setScrollableViewResId(int scrollableViewResId) {
@@ -118,10 +106,10 @@ public class Activity extends AppCompatActivity {
 
         if (scrollableView instanceof ScrollView) {
             scrollableView.getViewTreeObserver().addOnScrollChangedListener(
-                    () -> this.setInitialAppbarHeight(
+                    () -> this.setAppbarHeight(
                             Math.max(
                                     this.initialAppbarHeight - this.scrollableView.getScrollY(),
-                                    (int) (this.initialAppbarHeight / 2f)
+                                    (int) (this.initialAppbarHeight / 2.5f)
                             )
                     ));
 
@@ -135,11 +123,11 @@ public class Activity extends AppCompatActivity {
                         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                             super.onScrolled(recyclerView, dx, dy);
 
-                            Activity.this.setInitialAppbarHeight(
+                            Activity.this.setAppbarHeight(
                                     Math.max(
                                             initialAppbarHeight
                                                     - recyclerView.computeVerticalScrollOffset(),
-                                            (int) (initialAppbarHeight / 2f)
+                                            (int) (initialAppbarHeight / 2.5f)
                                     )
                             );
                         }
