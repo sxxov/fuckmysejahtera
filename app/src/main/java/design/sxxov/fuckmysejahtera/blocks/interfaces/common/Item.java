@@ -6,6 +6,12 @@ import java.util.Map;
 
 public interface Item {
     Map<String, String> toMap();
-    JSONObject toJSON();
-    String toJSONString();
+
+    default JSONObject toJSON() {
+        return new JSONObject(this.toMap());
+    }
+
+    default String toJSONString() {
+        return this.toJSON().toString();
+    }
 }
