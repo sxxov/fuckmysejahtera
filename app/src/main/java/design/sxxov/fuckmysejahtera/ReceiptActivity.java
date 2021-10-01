@@ -11,12 +11,9 @@ import android.webkit.WebView;
 
 import androidx.annotation.NonNull;
 
-import org.json.JSONObject;
-
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
 import design.sxxov.fuckmysejahtera.blocks.classes.Activity;
 import design.sxxov.fuckmysejahtera.blocks.interfaces.common.Callback;
@@ -24,8 +21,7 @@ import design.sxxov.fuckmysejahtera.history.HistoryHTML;
 import design.sxxov.fuckmysejahtera.history.HistoryHTMLFactory;
 import design.sxxov.fuckmysejahtera.history.HistoryItem;
 import design.sxxov.fuckmysejahtera.history.HistoryItemFactory;
-import design.sxxov.fuckmysejahtera.settings.SettingsItem;
-import design.sxxov.fuckmysejahtera.settings.SettingsStorage;
+import design.sxxov.fuckmysejahtera.receipt.ReceiptItemAdapter;
 import design.sxxov.fuckmysejahtera.utilities.AsyncUtility;
 import design.sxxov.fuckmysejahtera.webview.WebViewClient;
 
@@ -51,14 +47,14 @@ public class ReceiptActivity extends Activity {
         final String URL = (
                 intentUrl
                         + (
-                                intentUrl.contains("?")
-                                        ? "&"
-                                        : "?"
-                        )
+                        intentUrl.contains("?")
+                                ? "&"
+                                : "?"
+                )
                         + "data="
                         + this.encodeToBase64(
-                                configuredDataJSON
-                        )
+                        configuredDataJSON
+                )
         );
 
         this.setupWebView(webView);
@@ -119,10 +115,16 @@ public class ReceiptActivity extends Activity {
                             (String location) -> webView.evaluateJavascript(
                                     "document.documentElement.outerHTML",
                                     (String html) -> {
-                                        String time = new SimpleDateFormat("h:mm:ssa\nd/M/yy").format(new Date());
+                                        String time = new SimpleDateFormat(
+                                                "h:mm:ssa\nd/M/yy"
+                                        ).format(new Date());
                                         HistoryItem historyItem = new HistoryItemFactory()
                                                 .create(
-                                                        location.toLowerCase().replaceAll("^\"|\"$", ""),
+                                                        location
+                                                                .replaceAll(
+                                                                        "^\"|\"$",
+                                                                        ""
+                                                                ),
                                                         time
                                                 );
                                         HistoryHTML historyHTML = new HistoryHTMLFactory()
@@ -163,23 +165,12 @@ public class ReceiptActivity extends Activity {
     }
 
     private String getConfiguredDataJSON() {
-        final SettingsStorage settingsStorage = new SettingsStorage(this);
-        final SettingsItem settingsItem = settingsStorage.get();
-
-        if (settingsItem.name == null
-            || settingsItem.contact == null) {
+        if (this.state.name == null
+                || this.state.contact == null) {
             return null;
         }
 
-        final HashMap<String, String> configuredData = new HashMap<String, String>() {
-            {
-                put("name", settingsItem.name);
-                put("contact", settingsItem.contact);
-                put("userStatus", settingsItem.isHighRisk ? "HIGH" : "LOW");
-            }
-        };
-
-        return new JSONObject(configuredData).toString();
+        return ReceiptItemAdapter.adaptSettingsItem(this.state).toJSONString();
     }
 
     private String encodeToBase64(String string) {
