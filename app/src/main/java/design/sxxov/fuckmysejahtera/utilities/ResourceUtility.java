@@ -6,8 +6,6 @@ import android.util.TypedValue;
 import androidx.annotation.ColorInt;
 import androidx.core.content.ContextCompat;
 
-import design.sxxov.fuckmysejahtera.R;
-
 public class ResourceUtility {
     private Activity ctx;
 
