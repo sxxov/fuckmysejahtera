@@ -3,13 +3,14 @@ package design.sxxov.fuckmysejahtera.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SettingsStorage {
-    private Context ctx;
-    private SharedPreferences sharedPreferences;
+    private final SharedPreferences sharedPreferences;
 
     public SettingsStorage(Context ctx) {
-        this.ctx = ctx;
-        this.sharedPreferences = this.ctx
+        this.sharedPreferences = ctx
                 .getSharedPreferences(
                         "settings",
                         Context.MODE_PRIVATE
@@ -17,25 +18,27 @@ public class SettingsStorage {
     }
 
     public SettingsItem get() {
-        SettingsItemFactory settingsItemFactory = new SettingsItemFactory();
+        Map<String, ?> sharedPreferences = this.sharedPreferences.getAll();
+        Map<String, String> stringSharedPreferences = new HashMap<>();
 
-        return settingsItemFactory.create(
-                Boolean.parseBoolean(
-                        this.get(SettingsItem.IS_NIGHT_MODE_KEY)
-                ),
-                this.get(SettingsItem.NAME_KEY),
-                this.get(SettingsItem.CONTACT_KEY),
-                Boolean.parseBoolean(
-                        this.get(SettingsItem.IS_HIGH_RISK)
-                )
-        );
+        for (Map.Entry<String, ?> entry : sharedPreferences.entrySet()) {
+            if (entry.getValue() instanceof String) {
+                stringSharedPreferences.put(entry.getKey(), (String) entry.getValue());
+            }
+        }
+
+        return new SettingsItemFactory().fromMap(stringSharedPreferences);
     }
 
     public String get(String key) {
+        return this.get(key, null);
+    }
+
+    public String get(String key, String defValue) {
         return this.sharedPreferences
                 .getString(
                         key,
-                        null
+                        defValue
                 );
     }
 
@@ -69,5 +72,6 @@ public class SettingsStorage {
         this.set(SettingsItem.NAME_KEY, settingsItem.name);
         this.set(SettingsItem.CONTACT_KEY, settingsItem.contact);
         this.set(SettingsItem.IS_HIGH_RISK, settingsItem.isHighRisk);
+        this.set(SettingsItem.IS_VACCINATED, settingsItem.isVaccinated);
     }
 }

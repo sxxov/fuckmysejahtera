@@ -10,28 +10,36 @@ import java.util.Map;
 import design.sxxov.fuckmysejahtera.blocks.interfaces.common.Item;
 
 public class SettingsItem implements Item {
-    @Nullable
+    public static final String IS_NIGHT_MODE_KEY = "isNightMode";
+    public static final String NAME_KEY = "name";
+    public static final String CONTACT_KEY = "contact";
+    public static final String IS_HIGH_RISK = "isHighRisk";
+    public static final String IS_VACCINATED = "isVaccinated";
+
     public boolean isNightMode;
     @Nullable
     public String name;
     @Nullable
     public String contact;
-    @Nullable
     public boolean isHighRisk;
+    public boolean isVaccinated;
 
+    public SettingsItem() {
+        this.applyDefaults();
+    }
 
-    public static final String IS_NIGHT_MODE_KEY = "isNightMode";
-    public static final String NAME_KEY = "name";
-    public static final String CONTACT_KEY = "contact";
-    public static final String IS_HIGH_RISK = "isHighRisk";
+    protected void applyDefaults() {
+        this.isVaccinated = true;
+    }
 
     public Map<String, String> toMap() {
-        return new HashMap<String, String>() {
+        return new HashMap<>() {
             {
                 put(IS_NIGHT_MODE_KEY, Boolean.toString(isNightMode));
                 put(NAME_KEY, name);
                 put(CONTACT_KEY, contact);
                 put(IS_HIGH_RISK, Boolean.toString(isHighRisk));
+                put(IS_VACCINATED, Boolean.toString((isVaccinated)));
             }
         };
     }
