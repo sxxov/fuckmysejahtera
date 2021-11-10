@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,7 +22,6 @@ import android.widget.ScrollView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.room.Room;
 
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -29,12 +29,9 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import design.sxxov.fuckmysejahtera.blocks.classes.Activity;
-import design.sxxov.fuckmysejahtera.db.AppDatabase;
-import design.sxxov.fuckmysejahtera.db.AppDatabaseMigrationManager;
 import design.sxxov.fuckmysejahtera.settings.SettingsItem;
 import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
@@ -80,12 +77,25 @@ public class MainActivity extends Activity {
                 this.findViewById(R.id.main_scroll)
         );
         this.applyStateToButtons();
-        this.setupButtonsAnimationSet();
+//        this.setupButtonsAnimationSet();
 
         if (from != null
                 && from.equals(ReceiptActivity.class.getSimpleName())) {
             this.onInputButtonSaveClick(null);
         }
+
+        if (this.state.isFirstRun) {
+            this.bottomSheetHelpBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        this.setupHelpButtonSetDefault(
+                this.findViewById(R.id.help_button_set_default)
+        );
     }
 
     // stolen from https://stackoverflow.com/questions/2354336/how-to-exit-when-back-button-is-pressed
@@ -197,10 +207,8 @@ public class MainActivity extends Activity {
         this.recreate();
     }
 
-    public void onInputMenuHamburgerButtonHelpClick(
-            View inputMenuHamburgerButtonToggleSun
-    ) {
-        this.bottomSheetHelpBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    public void onInputMenuHamburgerButtonHelpClick(View v) {
+        this.bottomSheetHelpBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         this.findViewById(R.id.main_overlay_bottom_sheet).setVisibility(View.VISIBLE);
     }
 
@@ -272,34 +280,64 @@ public class MainActivity extends Activity {
         this.applyStateToButtons();
     }
 
-    // can probably use a factory for this
-    private void setupButtonsAnimationSet() {
-        for (Map.Entry<Integer, AnimatorSet> entry : this.buttonIdToAnimatorSet.entrySet()) {
-            final Button button = this.findViewById(entry.getKey());
-            final AnimatorSet animatorSet = entry.getValue();
+    private boolean isAppSetAsDefault() {
+        // STUB
+        return false;
 
-            ObjectAnimator animatorScaleX = ObjectAnimator.ofFloat(
-                    button,
-                    "scaleX",
-                    0.95f,
-                    1
-            );
+//        Intent intent = new Intent(
+//                Intent.ACTION_VIEW,
+//                Uri.parse(
+//                        this.getString(R.string.url_mysejahtera_intent)
+//                )
+//        );
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        ResolveInfo resolveInfo = this
+//                .getPackageManager()
+//                .resolveActivity(
+//                        intent,
+//                        PackageManager.MATCH_DEFAULT_ONLY
+//                );
+//
+//        if (resolveInfo == null
+//                || resolveInfo.activityInfo == null
+//                || resolveInfo.activityInfo.packageName == null
+//        )
+//            return false;
+//
+//        return this.getPackageName().equals(resolveInfo.activityInfo.packageName);
+    }
 
-            ObjectAnimator animatorScaleY = ObjectAnimator.ofFloat(
-                    button,
-                    "scaleY",
-                    0.95f,
-                    1
-            );
+    public void setupHelpButtonSetDefault(
+            Button helpButtonSetDefault
+    ) {
+        if (this.isAppSetAsDefault())
+            helpButtonSetDefault.setVisibility(View.GONE);
+    }
 
-            animatorSet
-                    .play(animatorScaleX)
-                    .with(animatorScaleY);
+    private void dismissFirstRun() {
+        this.state.isFirstRun = false;
+        this.settingsStorage.set(this.state);
+    }
 
-            animatorSet.setInterpolator(new OvershootInterpolator());
+    public void onHelpButtonClose(View v) {
+        this.bottomSheetHelpBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        this.findViewById(R.id.main_overlay_bottom_sheet).setVisibility(View.GONE);
 
-            animatorSet.setDuration(300);
-        }
+        this.dismissFirstRun();
+    }
+
+    public void onHelpButtonSetDefault(View v) {
+        Intent intent = new Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(
+                        this.getString(R.string.url_mysejahtera_intent)
+                                + this.getString(R.string.url_mysejahtera_set_default_hash)
+                )
+        );
+
+        this.startActivity(intent);
+
+        this.dismissFirstRun();
     }
 
     private void setupLayoutScroll(
@@ -321,6 +359,8 @@ public class MainActivity extends Activity {
                 .from(bottomSheetDialogHelp);
         this.bottomSheetHelpBehavior
                 .setState(BottomSheetBehavior.STATE_HIDDEN);
+        this.bottomSheetHelpBehavior
+                .setSkipCollapsed(true);
         this.bottomSheetHelpBehavior
                 .addBottomSheetCallback(
                         new BottomSheetBehavior.BottomSheetCallback() {

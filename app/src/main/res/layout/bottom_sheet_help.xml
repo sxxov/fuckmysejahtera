@@ -6,11 +6,10 @@
     android:layout_height="match_parent"
     android:background="@drawable/bottom_sheet_background_semi_rounded"
     app:behavior_hideable="true"
-    app:behavior_peekHeight="464.8dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <TextView
-        android:id="@+id/preferences_header"
+        android:id="@+id/help_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -138,7 +137,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_camera" />
+            app:srcCompat="@drawable/ic_settings" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -198,8 +197,108 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_camera" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/help_layout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/help_layout3">
+
+        <TextView
+            android:id="@+id/help_number4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/space_mono_bold"
+            android:text="@string/subtitle_help_4"
+            android:textColor="?attr/colourTextPrimary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/help_icon4"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/help_text4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/space_mono"
+            android:text="@string/description_help_4"
+            android:textColor="?attr/colourTextSecondary"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/help_icon4"
+            app:layout_constraintTop_toBottomOf="@+id/help_number4"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/help_icon4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:contentDescription="@string/help_icon_desc4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_like" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/help_button_skip"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".5"
+            android:background="@drawable/button_background_rounded_rippled"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/space_mono_bold"
+            android:onClick="onHelpButtonClose"
+            android:stateListAnimator="@animator/bounce_state_list"
+            android:text="@string/button_common_close"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/help_button_set_default"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/button_background_rounded_rippled"
+            android:backgroundTint="?attr/colorAccent"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/space_mono_bold"
+            android:onClick="onHelpButtonSetDefault"
+            android:stateListAnimator="@animator/bounce_state_list"
+            android:text="@string/button_help_set_default"
+            android:textColor="?attr/colourBackground"
+            android:textAllCaps="false"
+            android:layout_marginStart="28dp"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
