@@ -9,6 +9,7 @@ import android.util.Base64;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -34,6 +35,21 @@ public class ReceiptActivity extends Activity {
 
         final WebView webView = findViewById(R.id.receipt_webview);
         final String intentUrl = this.getIntentURL();
+
+        if (intentUrl.endsWith(
+                this.getString(R.string.url_mysejahtera_set_default_hash)
+        )) {
+            Toast.makeText(
+                    this,
+                    this.getString(R.string.toast_set_default),
+                    Toast.LENGTH_SHORT
+            ).show();
+
+            this.finish();
+
+            return;
+        }
+
         final String configuredDataJSON = this.getConfiguredDataJSON();
 
         if (configuredDataJSON == null) {
