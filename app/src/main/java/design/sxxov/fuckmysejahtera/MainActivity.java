@@ -40,7 +40,6 @@ import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public class MainActivity extends Activity {
-    public static AppDatabase db;
     private final HashMap<Integer, AnimatorSet> buttonIdToAnimatorSet = new HashMap<>() {
         {
             put(R.id.main_input_button_risk_low, new AnimatorSet());
@@ -60,15 +59,6 @@ public class MainActivity extends Activity {
         super.setAppbarViewResId(R.id.main_appbar);
         super.setScrollableViewResId(R.id.main_scroll);
         super.onCreate(savedInstanceState);
-
-        MainActivity.db = Room
-                .databaseBuilder(
-                        this,
-                        AppDatabase.class,
-                        "db"
-                )
-                .addMigrations(AppDatabaseMigrationManager.getMigrations())
-                .build();
 
         final Intent intent = this.getIntent();
         final String from = intent.getStringExtra("from");

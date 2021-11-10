@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import design.sxxov.fuckmysejahtera.R;
+import design.sxxov.fuckmysejahtera.db.AppDatabase;
+import design.sxxov.fuckmysejahtera.db.AppDatabaseFactory;
 import design.sxxov.fuckmysejahtera.settings.SettingsItem;
 import design.sxxov.fuckmysejahtera.settings.SettingsStorage;
 import design.sxxov.fuckmysejahtera.utilities.ResourceUtility;
@@ -22,7 +24,7 @@ import design.sxxov.fuckmysejahtera.utilities.SnackbarUtility;
 import design.sxxov.fuckmysejahtera.utilities.WindowUtility;
 
 public class Activity extends AppCompatActivity {
-    private final AtomicBoolean isAppbarLayoutScheduled = new AtomicBoolean();
+    private AppDatabase appDatabase;
     protected WindowUtility windowUtility;
     protected SnackbarUtility snackbarUtility;
     protected ResourceUtility resourceUtility;
@@ -34,6 +36,13 @@ public class Activity extends AppCompatActivity {
     private View appbar;
     private View scrollableView;
     private int initialAppbarHeight;
+
+    public AppDatabase getAppDatabase() {
+        if (this.appDatabase == null)
+            this.appDatabase = new AppDatabaseFactory(this).create();
+
+        return this.appDatabase;
+    }
 
     public View getAppbar() {
         return this.appbar;
