@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import design.sxxov.fuckmysejahtera.R;
 import design.sxxov.fuckmysejahtera.db.AppDatabase;
@@ -24,7 +24,6 @@ import design.sxxov.fuckmysejahtera.utilities.SnackbarUtility;
 import design.sxxov.fuckmysejahtera.utilities.WindowUtility;
 
 public class Activity extends AppCompatActivity {
-    private AppDatabase appDatabase;
     protected WindowUtility windowUtility;
     protected SnackbarUtility snackbarUtility;
     protected ResourceUtility resourceUtility;
@@ -33,6 +32,7 @@ public class Activity extends AppCompatActivity {
     protected int thisLayoutResId;
     protected int appbarResId;
     protected int scrollableViewResId;
+    private AppDatabase appDatabase;
     private View appbar;
     private View scrollableView;
     private int initialAppbarHeight;
@@ -126,16 +126,21 @@ public class Activity extends AppCompatActivity {
         }
 
         if (scrollableView instanceof RecyclerView) {
+            final AtomicInteger y = new AtomicInteger(
+                    ((RecyclerView) scrollableView).computeVerticalScrollOffset()
+            );
             ((RecyclerView) scrollableView)
                     .addOnScrollListener(new RecyclerView.OnScrollListener() {
                         @Override
                         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                             super.onScrolled(recyclerView, dx, dy);
 
+                            y.set(y.get() + dy);
+
                             Activity.this.setAppbarHeight(
                                     Math.max(
                                             initialAppbarHeight
-                                                    - recyclerView.computeVerticalScrollOffset(),
+                                                    - y.get(),
                                             (int) (initialAppbarHeight / 2.5f)
                                     )
                             );
