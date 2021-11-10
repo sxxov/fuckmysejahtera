@@ -113,7 +113,7 @@ public class HistoryHolder extends HistoryTypedViewHolder {
         historyItemBackgroundView.setOnClickListener(
                 (View view) -> new AsyncUtility()
                         .executeAsync(
-                                () -> MainActivity.db
+                                () -> this.ctx.getAppDatabase()
                                         .historyDao()
                                         .getHTMLById(historyItem.id)
                                         .get(0)

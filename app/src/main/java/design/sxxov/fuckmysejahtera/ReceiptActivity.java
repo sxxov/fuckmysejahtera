@@ -123,6 +123,7 @@ public class ReceiptActivity extends Activity {
                             (String location) -> webView.evaluateJavascript(
                                     "document.documentElement.outerHTML",
                                     (String html) -> {
+                                        @SuppressLint("SimpleDateFormat")
                                         String time = new SimpleDateFormat(
                                                 "h:mm:ssa\nd/M/yy"
                                         ).format(new Date());
@@ -141,13 +142,19 @@ public class ReceiptActivity extends Activity {
                                                         html
                                                 );
                                         new AsyncUtility().executeAsync(() -> {
-                                            MainActivity.db.historyDao().insertItems(
-                                                    historyItem
-                                            );
+                                            ReceiptActivity.this
+                                                    .getAppDatabase()
+                                                    .historyDao()
+                                                    .insertItems(
+                                                            historyItem
+                                                    );
 
-                                            MainActivity.db.historyDao().insertHTMLs(
-                                                    historyHTML
-                                            );
+                                            ReceiptActivity.this
+                                                    .getAppDatabase()
+                                                    .historyDao()
+                                                    .insertHTMLs(
+                                                            historyHTML
+                                                    );
 
                                             return null;
                                         });

@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,7 +42,7 @@ import me.everything.android.ui.overscroll.adapters.RecyclerViewOverScrollDecorA
 
 public class HistoryActivity extends Activity {
     private static final ArrayList<HistoryItem> deletedItems = new ArrayList<>();
-    private static final ArrayList<HistoryHTML> deletedImages = new ArrayList<>();
+    private static final ArrayList<HistoryHTML> deletedHTMLs = new ArrayList<>();
     private final List<HistoryItem> items = new ArrayList<>();
     public BottomSheetBehavior<View> bottomSheetBehavior;
     public WebView webView;
@@ -97,6 +99,12 @@ public class HistoryActivity extends Activity {
         this.setupPullToRefresh();
         this.setupVerticalSpaceItemDecorator();
         this.setupHistoryWebView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         this.scheduleRefresh();
     }
 
@@ -223,10 +231,12 @@ public class HistoryActivity extends Activity {
 
             this.items.clear();
             this.items.addAll(
-                    MainActivity.db.historyDao().getItems()
+                    this.getAppDatabase().historyDao().getItems()
             );
 
-            this.adapter.submit(this.items);
+            new Handler(Looper.getMainLooper())
+                    .post(() -> this.adapter.submit(this.items));
+
             this.isRefreshing = false;
 
             return null;
@@ -249,7 +259,10 @@ public class HistoryActivity extends Activity {
         Snackbar snackbar = Snackbar
                 .make(
                         layout,
-                        text + " (trash: " + HistoryActivity.deletedItems.size() + ")",
+                        "🗑️ "
+                        + HistoryActivity.deletedItems.size()
+                        + " — "
+                        + text,
                         Snackbar.LENGTH_INDEFINITE
                 )
                 .setAction(
@@ -265,15 +278,15 @@ public class HistoryActivity extends Activity {
                                             HistoryActivity.deletedItems.size() - 1
                                     );
                             HistoryHTML historyHTML = HistoryActivity
-                                    .deletedImages
+                                    .deletedHTMLs
                                     .get(
-                                            HistoryActivity.deletedImages.size() - 1
+                                            HistoryActivity.deletedHTMLs.size() - 1
                                     );
 
                             HistoryActivity.deletedItems.remove(
                                     historyItem
                             );
-                            HistoryActivity.deletedImages.remove(
+                            HistoryActivity.deletedHTMLs.remove(
                                     historyHTML
                             );
 
@@ -281,8 +294,8 @@ public class HistoryActivity extends Activity {
                             this.adapter.submit(this.items);
 
                             new AsyncUtility().executeAsync(() -> {
-                                MainActivity.db.historyDao().insertItems(historyItem);
-                                MainActivity.db.historyDao().insertHTMLs(historyHTML);
+                                this.getAppDatabase().historyDao().insertItems(historyItem);
+                                this.getAppDatabase().historyDao().insertHTMLs(historyHTML);
 
                                 return null;
                             });
@@ -297,58 +310,6 @@ public class HistoryActivity extends Activity {
                         }
                 );
 
-//        // change snackbar margins
-//        FrameLayout snackbarView = (FrameLayout) snackbar.getView();
-//        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackbarView
-//                .getChildAt(0)
-//                .getLayoutParams();
-//        params
-//                .setMargins(
-//                        params.leftMargin,
-//                        params.topMargin + this.windowUtility.getPx(6),
-//                        params.rightMargin,
-//                        params.bottomMargin + this.windowUtility.getPx(7)
-//                );
-//
-//        snackbarView
-//                .getChildAt(0)
-//                .setLayoutParams(params);
-//
-//        snackbarView
-//                .setBackground(
-//                        AppCompatResources
-//                                .getDrawable(
-//                                        this,
-//                                        R.drawable.snackbar_shape
-//                                )
-//                );
-//
-//        // change snackbar fonts
-//        TextView globalSnackbarTextView = snackbarView
-//                .findViewById(
-//                        com.google.android.material.R.id.snackbar_text
-//                );
-//        TextView globalSnackbarActionTextView = snackbarView
-//                .findViewById(
-//                        com.google.android.material.R.id.snackbar_action
-//                );
-//
-//        Typeface font = ResourcesCompat.getFont(this, R.font.space_mono);
-//
-//        globalSnackbarTextView.setTypeface(font);
-//        globalSnackbarActionTextView.setTypeface(font);
-//
-//        // change snackbar colours
-//        TypedValue typedValue = new TypedValue();
-//        this
-//                .getTheme()
-//                .resolveAttribute(
-//                        R.attr.colourTextPrimary,
-//                        typedValue,
-//                        true
-//                );
-//        globalSnackbarTextView.setTextColor(typedValue.data);
-
         // show snackbar
         snackbar.show();
     }
@@ -361,14 +322,14 @@ public class HistoryActivity extends Activity {
         this.adapter.submit(this.items);
 
         new AsyncUtility().executeAsync(() -> {
-            HistoryActivity.deletedImages.add(
-                    MainActivity.db
+            HistoryActivity.deletedHTMLs.add(
+                    this.getAppDatabase()
                             .historyDao()
                             .getHTMLById(historyItem.id)
                             .get(0)
             );
-            MainActivity.db.historyDao().deleteItem(historyItem);
-            MainActivity.db.historyDao().deleteHTMLById(historyItem.id);
+            this.getAppDatabase().historyDao().deleteItem(historyItem);
+            this.getAppDatabase().historyDao().deleteHTMLById(historyItem.id);
 
             return null;
         });
