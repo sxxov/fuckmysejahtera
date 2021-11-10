@@ -31,14 +31,17 @@ public class SettingsItemFactory implements ItemFactory<SettingsItem> {
                         == Configuration.UI_MODE_NIGHT_YES;
                 final String isNightMode = map.get(SettingsItem.IS_NIGHT_MODE_KEY);
                 final String isVaccinated = map.get(SettingsItem.IS_VACCINATED_KEY);
+                final String isFirstRun = map.get(SettingsItem.IS_FIRST_RUN_KEY);
 
                 this.isNightMode = isNightMode == null
                         ? isSystemInNightMode
                         : Boolean.parseBoolean(isNightMode);
+                this.isVaccinated = isVaccinated == null || Boolean.parseBoolean(isVaccinated);
+                this.isFirstRun = isFirstRun == null || Boolean.parseBoolean(isFirstRun);
+
                 name = map.get(SettingsItem.NAME_KEY);
                 contact = map.get(SettingsItem.CONTACT_KEY);
                 isHighRisk = Boolean.parseBoolean(map.get(SettingsItem.IS_HIGH_RISK_KEY));
-                this.isVaccinated = isVaccinated == null || Boolean.parseBoolean(isVaccinated);
             }
         };
     }
@@ -48,6 +51,9 @@ public class SettingsItemFactory implements ItemFactory<SettingsItem> {
         try {
             return new SettingsItem() {
                 {
+                    isFirstRun = Boolean.parseBoolean(
+                            jsonObject.getString(SettingsItem.IS_FIRST_RUN_KEY)
+                    );
                     isNightMode = Boolean.parseBoolean(
                             jsonObject.getString(SettingsItem.IS_NIGHT_MODE_KEY)
                     );

@@ -70,6 +70,7 @@ public class SettingsStorage {
     }
 
     public void set(SettingsItem settingsItem) {
+        this.set(SettingsItem.IS_FIRST_RUN_KEY, settingsItem.isFirstRun);
         this.set(SettingsItem.IS_NIGHT_MODE_KEY, settingsItem.isNightMode);
         this.set(SettingsItem.NAME_KEY, settingsItem.name);
         this.set(SettingsItem.CONTACT_KEY, settingsItem.contact);
