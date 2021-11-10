@@ -171,7 +171,7 @@
                     android:focusable="true"
                     android:fontFamily="@font/space_mono_bold"
                     android:onClick="onInputButtonRiskLowClick"
-                    android:stateListAnimator="@null"
+                    android:stateListAnimator="@animator/bounce_state_list"
                     android:text="@string/option_risk_low"
                     android:textAllCaps="false" />
 
@@ -189,7 +189,7 @@
                     android:focusable="true"
                     android:fontFamily="@font/space_mono_bold"
                     android:onClick="onInputButtonRiskHighClick"
-                    android:stateListAnimator="@null"
+                    android:stateListAnimator="@animator/bounce_state_list"
                     android:text="@string/option_risk_high"
                     android:textAllCaps="false" />
             </LinearLayout>
@@ -229,7 +229,7 @@
                     android:focusable="true"
                     android:fontFamily="@font/space_mono_bold"
                     android:onClick="onInputButtonVaccinationTrueClick"
-                    android:stateListAnimator="@null"
+                    android:stateListAnimator="@animator/bounce_state_list"
                     android:text="@string/option_vaccination_true"
                     android:textAllCaps="false" />
 
@@ -247,7 +247,7 @@
                     android:focusable="true"
                     android:fontFamily="@font/space_mono_bold"
                     android:onClick="onInputButtonVaccinationFalseClick"
-                    android:stateListAnimator="@null"
+                    android:stateListAnimator="@animator/bounce_state_list"
                     android:text="@string/option_vaccination_false"
                     android:textAllCaps="false" />
             </LinearLayout>
