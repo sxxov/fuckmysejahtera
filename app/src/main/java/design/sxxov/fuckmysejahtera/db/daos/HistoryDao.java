@@ -17,7 +17,7 @@ public interface HistoryDao {
     List<HistoryItem> getItems();
 
     @Query("select * from HistoryHTML order by id desc")
-    List<HistoryHTML> getImages();
+    List<HistoryHTML> getHTMLs();
 
     @Query("select * from HistoryItem where id = :id")
     List<HistoryItem> getItemById(long id);
