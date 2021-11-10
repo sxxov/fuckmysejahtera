@@ -16,6 +16,11 @@
     <string name="option_vaccination_true">yes</string>
     <string name="option_vaccination_false">no</string>
 
+    <string name="button_common_close">close</string>
+    <string name="button_common_ok">OK</string>
+    <string name="button_common_skip">skip</string>
+    <string name="button_help_set_default">set me as default</string>
+
     <string name="snackbar_save_complete">successfully saved!</string>
     <string name="snackbar_save_name_empty">name is not filled in</string>
     <string name="snackbar_save_contact_empty">contact is not filled in</string>
@@ -29,11 +34,13 @@
     <string name="fam_help">how do i work?</string>
 
     <string name="subtitle_help_1">1.</string>
-    <string name="description_help_1">input your details to be used for contact tracing here</string>
+    <string name="description_help_1">input your details to be used for contact tracing</string>
     <string name="subtitle_help_2">2.</string>
-    <string name="description_help_2">use an external qr code scanner to scan a mysejahtera qr code &amp; set this app as default</string>
+    <string name="description_help_2">set this app as default to handle MySejahtera URLs</string>
     <string name="subtitle_help_3">3.</string>
-    <string name="description_help_3">enjoy</string>
+    <string name="description_help_3">use an external qr code scanner to scan a MySejahtera QR code</string>
+    <string name="subtitle_help_4">4.</string>
+    <string name="description_help_4">enjoy</string>
 
     <string name="history_deleted1">we\'ll pretend that never happened…</string>
     <string name="history_deleted2">poof…</string>
@@ -56,8 +63,13 @@
     <string name="error">this is awkward, you shouldn\'t\'ve been able to see this</string>
     <string name="camera_not_found">can\'t seem to find your camera, sorry about that</string>
 
-    <string name="help_icon_desc1">Pencil icon</string>
-    <string name="help_icon_desc2">Camera icon</string>
-    <string name="help_icon_desc3">Thumbs up icon</string>
-    <string name="history_refresh_desc">Refresh icon</string>
+    <string name="help_icon_desc1">pencil icon</string>
+    <string name="help_icon_desc2">settings icon</string>
+    <string name="help_icon_desc3">camera icon</string>
+    <string name="help_icon_desc4">thumbs up icon</string>
+    <string name="history_refresh_desc">refresh icon</string>
+
+    <string name="url_mysejahtera_intent">https://mysejahtera.malaysia.gov.my/qrscan</string>
+    <string name="url_mysejahtera_set_default_hash">#__nmy__#</string>
+    <string name="toast_set_default">set as default.</string>
 </resources>
